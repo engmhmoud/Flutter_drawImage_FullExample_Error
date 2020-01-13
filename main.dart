@@ -1,0 +1,238 @@
+import 'dart:io';
+
+import 'package:AlMAKTAB/Sign.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as ImageLib;
+import 'package:path_provider/path_provider.dart';
+
+void main() {
+  // f.lastModified();
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      darkTheme: ThemeData(
+        buttonTheme: ButtonThemeData(
+          minWidth: 10,
+        ),
+        textTheme: TextTheme(button: TextStyle(fontSize: 10)),
+      ),
+      title: 'Al MAKTAB',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Intro(),
+    );
+  }
+}
+
+class Intro extends StatefulWidget {
+  @override
+  _IntroState createState() => _IntroState();
+}
+
+class _IntroState extends State<Intro> {
+  File file1;
+  File file2;
+  File fileResult;
+  Widget image2Widget;
+  Widget result;
+  ImageLib.Image image1;
+  ImageLib.Image image2;
+  ImageLib.Image image_result;
+
+  _IntroState() {
+    result = Container();
+    image2Widget = Container();
+  }
+  Future<ImageLib.Image> fromFileToImage(File fileImage) async {
+    var data = await fileImage.readAsBytes();
+
+    return ImageLib.decodeImage(data);
+  }
+
+  //to just swap between files
+  var deleteFirst = false;
+
+  Future<void> getImageFromPicker() async {
+    File fileImage = await ImagePicker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 100,
+    );
+    if (fileImage == null) return;
+
+    var temp = await fromFileToImage(fileImage);
+
+    // if (image1 == null) {
+    setState(() {
+      file1 = fileImage;
+      image1 = temp;
+    });
+    // } else if (image2 == null) {
+    //   setState(() {
+    //     file2 = fileImage;
+    //     image2 = temp;
+    //   });
+    // } else if (!deleteFirst) {
+    //   setState(() {
+    //     file1 = fileImage;
+    //     image1 = temp;
+    //     deleteFirst = !deleteFirst;
+    //   });
+    // } else {
+    //   setState(() {
+    //     file2 = fileImage;
+    //     image2 = temp;
+    //     deleteFirst = !deleteFirst;
+    //   });
+    // }
+  }
+
+  void testDraw() {
+    // if (image_result == null)
+    mydrawImage();
+    // else
+    // {
+
+    // setState(() {
+    //   result = getImageWidget(file: fileResult);
+    // });
+    // }
+  }
+
+  Future<File> getFile(String name) async {
+    Directory mainDirectory = await getApplicationDocumentsDirectory();
+    File f = File(mainDirectory.path + "/$name");
+    if (await f.exists()) {
+      await f.delete();
+    }
+    f..create(recursive: true);
+    return f;
+  }
+
+  int list = 0;
+  Future<void> mydrawImage() async {
+    print("listed $list");
+    File f = await getFile(
+        "${list++}.png"); // File(mainDirectory.path + "/${list++}");
+    print(image1);
+    print(image2);
+    ImageLib.Image image =
+        ImageLib.drawImage(image1, image2, srcW: 40, srcH: 100);
+
+    await f.writeAsBytes(image.data);
+
+    setState(() {
+      fileResult = f;
+      result = getImageWidget(file: f);
+      image_result = image;
+    });
+  }
+
+  Future<File> fromImageToFile(ImageLib.Image image) async {
+    File f = await getFile("${list++}.png");
+    await f.writeAsBytes(image.data);
+    return f;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("test draw image"),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        label: IconButton(
+          icon: Icon(Icons.send),
+          onPressed: () {
+            testDraw();
+          },
+        ),
+        onPressed: () {},
+        materialTapTargetSize: MaterialTapTargetSize.padded,
+        icon: Row(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                getImageFromPicker();
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.add_to_photos),
+              onPressed: () {
+                Navigator.push(
+                        context, MaterialPageRoute(builder: (c) => Sign()))
+                    .then((onValue) {
+                  print("onValue");
+                  print((onValue as ImageLib.Image).data);
+
+                  if (onValue == null) {
+                    return;
+                  } else
+                    addSign(onValue);
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            getImageWidget(file: file1),
+            image2Widget ?? Container(),
+            result == null
+                ? Container()
+                : Container(
+                    child: result,
+                    color: Colors.grey.withOpacity(.5),
+                    width: 200,
+                    height: 200,
+                  )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getImageWidget({File file, ImageLib.Image image}) {
+    if (file != null)
+      return Container(
+          alignment: Alignment.center,
+          height: MediaQuery.of(context).size.height / 3,
+          child: Image.file(file));
+    else if (image != null) {
+      return Container(
+          alignment: Alignment.center,
+          height: MediaQuery.of(context).size.height / 3,
+          child: Image.memory(image.data.buffer.asUint8List()));
+    } else
+      return Container(
+        alignment: Alignment.center,
+        height: MediaQuery.of(context).size.height / 3,
+        child: Text("upload Image"),
+      );
+  }
+
+  Future<void> addSign(ImageLib.Image image) async {
+    var f = await fromImageToFile(image);
+
+    var widget = getImageWidget(image: image);
+
+    setState(() {
+      file2 = f;
+      image2 = image;
+      image2Widget = widget;
+    });
+  }
+}
