@@ -1,0 +1,89 @@
+{
+  "project_info": {
+    "project_number": "336779356375",
+    "firebase_url": "https://al-maktab-a2e68.firebaseio.com",
+    "project_id": "al-maktab-a2e68",
+    "storage_bucket": "al-maktab-a2e68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336779356375:android:f2aa543cdf8b62e49ee892",
+        "android_client_info": {
+          "package_name": "com.appsvalley.almaktabapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "336779356375-mh305hq6js9fhen4hafgl78lb7p4b8tc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7pdXKk7fv0jcBZSfYZBAb0OzofAC6P7s"
+        },
+        {
+          "current_key": "AIzaSyCrtchsrE64X8YGueH9jGoNcDEl8-Vmb7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "336779356375-mh305hq6js9fhen4hafgl78lb7p4b8tc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "336779356375-nd2h4644vju0krj2in8dbburj6v0nced.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.khaledFlutterBeta2"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336779356375:android:8139849932d8d9149ee892",
+        "android_client_info": {
+          "package_name": "com.example.khaled_flutter_beta_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "336779356375-mh305hq6js9fhen4hafgl78lb7p4b8tc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7pdXKk7fv0jcBZSfYZBAb0OzofAC6P7s"
+        },
+        {
+          "current_key": "AIzaSyCrtchsrE64X8YGueH9jGoNcDEl8-Vmb7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "336779356375-mh305hq6js9fhen4hafgl78lb7p4b8tc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "336779356375-nd2h4644vju0krj2in8dbburj6v0nced.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.khaledFlutterBeta2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
